@@ -90,3 +90,92 @@ Se determinarán los clasificados a las rondas eliminatorias.
 Se simulará el torneo completo.
 
 Este proceso será repetido miles de veces utilizando simulación Monte Carlo.
+
+##  Estructura del Proyecto
+
+## 📂 Estructura del Proyecto
+
+```text
+proyecto_ml/
+│
+├── data/
+│   │
+│   ├── raw/
+│   │   ├── results.csv
+│   │   ├── fifa_ranking_2026.csv
+│   │   └── elo.csv
+│   │
+│   └── processed/
+│       ├── results_normalized.csv
+│       ├── results1_normalized.csv
+│       ├── results_final.csv
+│       ├── fifa_normalized.csv
+│       ├── fifa_final.csv
+│       ├── elo_normalized.csv
+│       ├── elo_final.csv
+│       ├── dataset_modelado.csv
+│       ├── dataset_mundial_final.csv
+│       ├── selecciones_mundial_2026.csv
+│       ├── selecciones_actuales_mundial.csv
+│       └── selecciones_actuales_mundial_prueba.csv
+│
+├── notebook/
+│   ├── limpieza_results.ipynb
+│   ├── limpieza_ranking.ipynb
+│   ├── normalizacion_nombres.ipynb
+│   ├── normalizacion_elo.ipynb
+│   ├── elo.ipynb
+│   ├── datasetfinal.ipynb
+│   ├── analisis.ipynb
+│   ├── muestras.ipynb
+│   ├── preparacion_mundial_2026.ipynb
+│   ├── mundial_simulacion.ipynb
+│   ├── mundial_simulacion_ridge.ipynb
+│   ├── mundial_simulacion_codigo.ipynb
+│   └── simulacion_mundial.ipynb
+│
+├── modelos/
+│   ├── modelo_regresion_lineal.pkl
+│   ├── modelo_ridge.pkl
+│   ├── scaler.pkl
+│   ├── modelos_ml.ipynb
+│   └── comparacion_modelos.csv
+│
+├── resultados/
+│   ├── probabilidades_mundial.csv
+│   ├── probabilidades_mundial_1.csv
+│   ├── probabilidades_mundial_2.csv
+│   ├── probabilidades_mundial_20.csv
+│   ├── probabilidades_mundial_50.csv
+│   ├── probabilidades_mundial_100.csv
+│   ├── probabilidades_mundial_500.csv
+│   ├── probabilidades_mundial_500_2.csv
+│   ├── probabilidades_mundial_mil.csv
+│   └── probabilidades_mundial_5mil.csv
+│
+├── imagenes/
+│   ├── analisis/
+│   ├── simulacion/
+│   ├── copa_mundo.png
+│   └── estadio_fondo.png
+│
+├── codigos/
+│   ├── codigo_limpieza.py
+│   ├── codigo_normalizacion_nombres.py
+│   ├── codigo_normalizacion_elo.py
+│   ├── codigo_datasetfinal.py
+│   ├── codigo_analisis.py
+│   ├── codigo_muestras.py
+│   ├── codigo_modelos.py
+│   ├── codigo_pre_mundial.py
+│   ├── codigo_preparacion_mundial.py
+│   └── codigo_simulacion.py
+│
+├── app.py
+├── streamlit.py
+├── simular.py
+├── memoria.ipynb
+├── README.md
+├── presentacion_ML_final.pdf
+└── .gitignore
+```

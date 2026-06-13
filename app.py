@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import joblib
 import numpy as np
 from simular import simular_mundial
-from collections import Counter
 from collections import Counter, defaultdict
 # --------------------------------------------------
 # CONFIGURACIÓN
@@ -26,7 +25,7 @@ selecciones = pd.read_csv(
 )
 
 probabilidades = pd.read_csv(
-    "data/processed/probabilidades_mundial_5mil.csv"
+    "resultados/probabilidades_mundial_5mil.csv"
 )
 
 selecciones_modelo = pd.read_csv(
@@ -93,62 +92,141 @@ def simular_partido(equipo_local, equipo_visitante):
     return diferencia_final
 
 
+import streamlit as st
 
+st.set_page_config(
+    page_title="Simulador Mundial 2026",
+    layout="wide"
+)
 
-# --------------------------------------------------
+# ==========================
 # CSS
-# --------------------------------------------------
+# ==========================
 
 st.markdown("""
 <style>
+    section[data-testid="stSidebar"]{
 
-.stApp {
-    background: linear-gradient(
-        135deg,
-        #0f172a,
-        #1e293b
-    );
-    color: white;
-}
-
-.main-title {
-    text-align: center;
-    font-size: 3rem;
-    font-weight: bold;
-    color: #22c55e;
-}
-
-.subtitle {
-    text-align: center;
-    color: #cbd5e1;
-}
-
-.card {
-    background-color: rgba(
-        255,
-        255,
-        255,
-        0.08
-    );
-
-    padding: 20px;
-
-    border-radius: 15px;
-
-    border: 1px solid rgba(
-        255,
-        255,
-        255,
-        0.1
+    background:
+    linear-gradient(
+        180deg,
+        #07162f,
+        #0b2457
     );
 }
+/* ==========================
+   FONDO GENERAL
+========================== */
 
-section[data-testid="stSidebar"] {
-    background-color: #111827;
+.block-container{
+    padding-top: 1rem;
+}
+
+/* ==========================
+   TITULO PRINCIPAL
+========================== */
+
+.main-title{
+
+    text-align:center;
+
+    color:#ffffff;
+
+    font-size:55px;
+
+    font-weight:800;
+
+    margin-top:10px;
+
+    margin-bottom:30px;
+
+    text-shadow:
+    0 0 15px rgba(245,197,66,.4);
+}
+
+/* ==========================
+   TARJETAS DE GRUPOS
+========================== */
+
+.card{
+
+    background:
+    rgba(12,35,85,.88);
+
+    backdrop-filter: blur(8px);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 8px 25px rgba(0,0,0,.25);
+
+    margin-bottom:20px;
+
+    color:white;
+
+    line-height:1.8;
+}
+
+/* ==========================
+   TITULO DE CADA GRUPO
+========================== */
+
+.grupo-titulo{
+
+    background:
+    linear-gradient(
+        90deg,
+        #f5c542,
+        #ffdd77
+    );
+
+    color:#0a1f4d;
+
+    font-weight:800;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+    font-size:22px;
+
+    box-shadow:
+    0 3px 10px rgba(245,197,66,.35);
+}
+
+/* ==========================
+   METRICAS
+========================== */
+
+[data-testid="stMetric"]{
+
+    background:
+    rgba(12,35,85,.88);
+
+    padding:15px;
+
+    border-radius:15px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.2);
 }
 
 </style>
 """, unsafe_allow_html=True)
+
+
 
 # --------------------------------------------------
 # MENÚ
@@ -157,39 +235,92 @@ section[data-testid="stSidebar"] {
 pagina = st.sidebar.radio(
     "MENÚ",
     [
-        "Inicio",
-        "Equipos",
-        "Comparar Selecciones",
-        "Simular Partido",
-        "Mundial Completo",
-        "Simular Mundial",
-        "Probabilidades"
+        "INICIO",
+        "EQUIPOS",
+        "COMPARAR SELECCIONES",
+        "SIMULAR PARTIDO",
+        "MUNDIAL COMPLETO",
+        "SIMULAR MUNDIAL"
     ]
 )
 
 # --------------------------------------------------
 # INICIO
 # --------------------------------------------------
+if pagina == "INICIO":
+    import base64
 
-if pagina == "Inicio":
+    with open("imagenes/estadio_fondo.png", "rb") as f:
+        estadio = base64.b64encode(f.read()).decode()
 
-    col1, col2, col3 = st.columns([1,2,1])
+    st.markdown(f"""
+<style>
 
-    with col2:
+.stApp {{
 
+    background:
+    linear-gradient(
+        rgba(0,15,50,0.82),
+        rgba(0,15,50,0.90)
+    ),
+    url("data:image/png;base64,{estadio}");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}}
+
+</style>
+""", unsafe_allow_html=True)
+
+    hero1, hero2 = st.columns([3,2])
+
+    with hero1:
+
+        st.markdown("""
+    <div class='main-title' style='text-align:left; margin-top:50px;'>
+
+    SIMULADOR<br>
+    MUNDIAL 2026
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style='
+        color:white;
+        font-size:22px;
+        margin-top:20px;
+        margin-bottom:30px;
+    '>
+
+    Simula partidos, compara selecciones y descubre
+    qué selección tiene más probabilidades de levantar
+    la Copa del Mundo.
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    c1,c2,c3 = st.columns(3)
+
+    with c1:
+        st.metric("Selecciones", 48)
+
+    with c2:
+        st.metric("Grupos", 12)
+
+    with c3:
+        st.metric("Partidos", 104)
+
+    with hero2:
+        
+        st.markdown("<br><br>", unsafe_allow_html=True)
         st.image(
-            "imagenes/logo_mundial.png",
-            width=400
-        )
-
-    st.markdown(
-        """
-        <div class='main-title'>
-        SIMULADOR MUNDIAL 2026
-        </div>
-        """,
-        unsafe_allow_html=True
+        "imagenes/copa_mundo.png",
+        width=400
     )
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     grupos_visual = {
         "Grupo A": ["Mexico", "South Africa", "South Korea", "Czech Republic"],
@@ -217,7 +348,9 @@ if pagina == "Inicio":
             st.markdown(
                 f"""
                 <div class="card">
-                <h3>{grupo}</h3>
+                     <div class="grupo-titulo">
+                     {grupo}
+                </div>     
                 {'<br>'.join(equipos)}
                 </div>
                 """,
@@ -230,7 +363,7 @@ if pagina == "Inicio":
 # EQUIPOS
 # --------------------------------------------------
 
-elif pagina == "Equipos":
+elif pagina == "EQUIPOS":
 
     equipo = st.selectbox(
         "Selecciona equipo",
@@ -273,7 +406,7 @@ elif pagina == "Equipos":
 # COMPARAR SELECCIONES
 # --------------------------------------------------
 
-elif pagina == "Comparar Selecciones":
+elif pagina == "COMPARAR SELECCIONES":
 
     col1, col2 = st.columns(2)
 
@@ -514,11 +647,11 @@ elif pagina == "Comparar Selecciones":
     )
 
     st.write(
-        f"🏆 Mejor ELO: **{mejor_elo}**"
+        f"Mejor ELO: **{mejor_elo}**"
     )
 
     st.write(
-        f"🏆 Mejor Ranking FIFA: **{mejor_rank}**"
+        f"Mejor Ranking FIFA: **{mejor_rank}**"
     )
 
     if fila1["elo"] > fila2["elo"] and fila1["rank"] < fila2["rank"]:
@@ -543,7 +676,7 @@ elif pagina == "Comparar Selecciones":
 # MUNDIAL COMPLETO
 # --------------------------------------------------
 
-elif pagina == "Mundial Completo":
+elif pagina == "MUNDIAL COMPLETO":
 
     st.header(
         "Mundial Completo"
@@ -730,7 +863,7 @@ elif pagina == "Mundial Completo":
 # SIMULAR PARTIDO
 # --------------------------------------------------
 
-elif pagina == "Simular Partido":
+elif pagina == "SIMULAR PARTIDO":
 
     def probabilidades_partido(
         equipo_local,
@@ -781,7 +914,7 @@ elif pagina == "Simular Partido":
         probs = probabilidades_partido(
             local,
             visitante,
-            5000
+            500
         )
 
         st.success(
@@ -796,19 +929,19 @@ elif pagina == "Simular Partido":
         if ganador == "local":
 
             st.subheader(
-                f"🏆 Favorito: {local}"
+                f"Favorito: {local}"
             )
 
         elif ganador == "visitante":
 
             st.subheader(
-                f"🏆 Favorito: {visitante}"
+                f"Favorito: {visitante}"
             )
 
         else:
 
             st.subheader(
-                "🤝 Partido muy igualado"
+                "Partido muy igualado"
             )
 
         col1, col2, col3 = st.columns(3)
@@ -834,39 +967,14 @@ elif pagina == "Simular Partido":
                 f"{probs['visitante']:.1f}%"
             )
 
-        grafico = pd.DataFrame({
-
-            "Resultado": [
-                local,
-                "Empate",
-                visitante
-            ],
-
-            "Probabilidad": [
-                probs["local"],
-                probs["empate"],
-                probs["visitante"]
-            ]
-
-        })
-
-        st.subheader(
-            "Probabilidades del partido"
-        )
-
-        st.bar_chart(
-            grafico.set_index(
-                "Resultado"
-            )
-        )
 # --------------------------------------------------
 # SIMULAR MUNDIAL
 # --------------------------------------------------
 
-elif pagina == "Simular Mundial":
+elif pagina == "SIMULAR MUNDIAL":
 
     st.header(
-        "🏆 Simulación Mundial 2026"
+        "Simulación Mundial 2026"
     )
 
     num_sim = st.slider(
@@ -991,22 +1099,10 @@ elif pagina == "Simular Mundial":
             use_container_width=True
         )
 
-        st.subheader(
-            "Top candidatos al título"
-        )
-
-        top10 = (
-            tabla
-            .head(10)
-            .set_index("Equipo")
-        )
-
-        st.bar_chart(
-            top10["Campeón"]
-        )
+        
 
         st.subheader(
-            "🥇 Favoritos"
+            "Favoritos"
         )
 
         col1, col2, col3 = st.columns(3)
@@ -1036,34 +1132,7 @@ elif pagina == "Simular Mundial":
             f"Se han simulado {num_sim} Mundiales"
         )
 
-# --------------------------------------------------
-# PROBABILIDADES
-# --------------------------------------------------
 
-elif pagina == "Probabilidades":
-
-    st.subheader(
-        "Probabilidades Monte Carlo"
-    )
-
-    tabla = probabilidades.sort_values(
-        "Campeon",
-        ascending=False
-    )
-
-    st.dataframe(
-        tabla
-    )
-
-    grafico = (
-        tabla
-        .head(10)
-        .set_index("team")
-    )
-
-    st.bar_chart(
-        grafico["Campeon"]
-    )
 
 
     
